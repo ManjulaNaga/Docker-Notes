@@ -1,2 +1,42 @@
 Docker basics video tutorial link:
 https://www.youtube.com/watch?v=VlSW-tztsvM
+
+
+
+
+Docker Introduction
+Pre-Virtualization World:
+
+￼
+DisAdv:
+1. Huge cost
+2. Slow Deployment
+3. Hard to migrate
+
+Hypervisor-based VirtualizatION
+￼
+Adv:
+Multiple OS on single machine
+
+Hypervisor providers:
+VMWare and Virtual Box
+
+Recent:
+AWS and Microsoft Azure
+
+Adv:
+1. Cost Efficient(Multiple VMs on single machine) Use same CPU, resources.
+2. Easy to scale (NO ordering and configuring servers. So fast)
+Limitations:
+1. Kernel Resource Duplication.     Each VM needs its own OS installed, device drivers, deacons etc.
+2. Application Portability Issue
+
+Container-based Virtualization
+
+
+Adv:
+1. Cost effective
+2. Fast Deployment
+3. Guaranteed  portability
+
+
