@@ -1,0 +1,213 @@
+Docker Tutorial:
+
+Docker clients:	
+2 ways	
+Docker cmd line	
+Kitematic docker client	
+	
+Docker Daemon / docker Server/ Docker Engine	
+	
+Docker concepts:	
+	
+Containers	
+Images	
+	
+Images are ready only templates used to create containers.	
+Images are created with docker build cmd.	
+Images can can be very big.They are composed of layers of other images.	
+Images are stored in docker registry(docker hub)	
+	
+	
+Containers:	
+If image is a class, container is a instance of class.	
+Containers are light weight and portable encapsulations of an env in which app runs.	
+Containers are created from images. Inside container all binaries, dependencies needed to run app are present.	
+	
+	
+Registries and Repositories:	
+Images are stored in registry.	
+You can host your own registry or use dockers public registry i.e.,Docker Hub.	
+Inside registry images are stored in repositories.	
+Docker repo has  different docker images with same name and different tags(versions)	
+	
+Docker Hub: Public Docker Registry	
+Official images are authorized and best to use.	
+	
+Install Docker:	
+Steps:	
+	
+Docker commands:	
+	
+docker images	
+docker run busy box:1.30 (containername:tagname) echo “hello world” 	
+// o/ps hello world after starting docker container	
+	
+	“-I” flag  starts interactive container	
+	“-t” flag creates a pseudo -tty that attaches stdin and stdout.	
+	“-d”  to make job run background	
+docker inspect container name	
+docker rm container id	
+Docker logs	
+	
+Docker image layers:	
+	
+Bottom image called “base image”	
+	
+Multiple containers can share same image(ex Ubuntu)	
+	
+	
+	
+Build docker image:	
+	
+2 ways:1. Commit changes made in a docker container	
+		   2. Write a Dockerfile	
+	
+Way1 steps:	
+Spin up a container from a base image	
+Install Git package in the container	
+Commit charges made in the container	
+	
+	
+Exercise:	
+	
+	docker run —name mydebian -it Debian:jessie	
+       //installing Debian from docker hub	
+	//installation successful 	
+	//in Debian run some cmd like	
+	//git	
+	//error :not found	
+	//install git in debian	
+	//apt-get install update && apt-get install git	
+	//wait till git is installed	
+	//check installation	
+	//git	
+	// exit	
+	
+	docker commit:	
+		
+	docker commit mydebian naga488/debian:1.00  //(repository name)	
+	docker images	
+	// now we can see our new image created 	
+	check again it the image will run 	
+	docker run  -it naga488/debian:1.00	
+	//inside debian 	
+	//ls	
+	//git	
+	//check if git is present // Yes it is present// it means the changes are saved with commit	
+		
+	
+Way2 steps:	
+	create a docker file	
+Dockerfile: A text doc that contains  all the instructions users provide to assemble an image	
+	
+Dockerfile:	
+	
+FROM Debian:jessie	
+RUN apt-get update	
+RUN apt-get install -y git	
+RUN apt-get install -y vim	
+	
+	
+Docker build:	
+		
+	docker build -t naga488/debian .	
+//builds I.e.,create image 	
+	
+//what happens inside?	
+	
+Docker runs each instruction inside a container. container is removed immediately after the action is completed.	
+Thus it creates intermediary containers	
+	
+Docker demon runs each each instruction inside a container.	
+A container is a writable process that will write a file system change  to a image,	
+Here it installs a program, once docker performs changes to the image and commit that  image,
+docker removes that container.	
+	
+For a new instruction, docker creates a container, runs instructions , commits the image (creates a new image layer) and removes the container.	
+	
+Containers are ephemeral.	
+Images are persistent and read only.	
+	
+Chain RUN  cmds:	
+	Each run command will execute the 	command on the top writable layers the container , then commit the container as new image.	
+	
+Modified Dockerfile:	
+	
+FROM Debian:jessie	
+RUN apt-get update && apt-get install -y \	
+ git \	
+ python \	
+ vim	
+	
+	
+CMD Instruction:	
+It specifies what cmd you want to run when the container starts up.	
+If we don’t specify CMD instruction in Dockerfile, Docker will use default cmd defined in base image.	
+CMD instruction does not run building the image, it runs only when the container starts up.	
+You can specify= the command in either exec form or in shell form.	
+	
+Example:	
+	
+	
+FROM Debian:jessie	
+RUN apt-get update && apt-get install -y \	
+ git  \	
+ vim	
+CMD [“echo”,”hello world”]	
+	
+	docker build	
+	docker run	
+	hello world	
+We can override the CMD instruction in run time.	
+By 	
+	docker run container_id echo “hello docker”	
+	//hello docker	
+	
+Docker Cache:	
+	
+Last docker build is much faster than first docker build, because of docker cache.	
+	
+Aggressive caching:	
+	
+Caching the previous run cmdswill ve used again, but it the cmd is appended with more commands it will not recognize the change and keeps it.	
+	
+Solutions:	
+Write the commands properly.	
+Invalidate cache by :	
+		docker build -t naga488/debian . —no-cache = true	
+	
+COPY instruction:	
+	It copies new files or directories from context and adds them to the file system of the container.	
+	
+Ex:	
+	vi abc.txt	
+		
+/open Dockerfile:	
+	add 	
+	COPY abc.txt /src/abc.txt	
+	
+Docker build	
+Docker run 	
+Check in src folder for abc.txt	
+	
+	
+ADD instruction:	
+	ADD allows to download. File from internet and copy to the container	
+	It automatically unpacks the compressed files.	
+	
+COPY vs ADD	
+	
+COPY is more preferred for the sake of transparency.	
+	
+	
+Push images to Docker Hub:	
+	docker images	
+	docker tag image_id  repository name:tagname	
+	ex:docker tag 03b27cc9fc23 naga488/debian:1.01	
+	docker push repository:tagname	
+ 	ex: docker push naga488/debian:1.01	
+Check the image in docker hub.	
+	
+	
+	
+	
