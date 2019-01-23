@@ -1,0 +1,50 @@
+Commands:
+
+Container:
+To create a Container:
+    docker run -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
+To stop a Container.
+    docker stop `dl`
+To start a Container.
+    docker start `dl`
+To restart a Container.
+    docker restart `dl`
+To Connect to a running Container.
+    docker attach `dl`
+To copy file in a Container to the host.
+    docker cp `dl`:/etc/passwd .
+To mount the directory in host to a Container.
+    docker run -v /home/vagrant/test:/root/test ubuntu echo yo
+To delete a Container.
+    docker rm `dl`
+Info of Container
+    To show running Containers. With -a option, it shows running and stopped Containers.
+        docker ps
+To show Container information like IP adress.
+    docker inspect `dl`
+To show log of a Container.
+    docker logs `dl`
+To show running process in a Container.
+    docker top `dl`  
+    
+Image
+
+To create a image from a Container. For tag name, <username>/<imagename> is recommended.
+    docker run -d ubuntu /bin/sh -c "apt-get install -y hello"
+    docker commit -m "My first container" `dl` tcnksm/hello
+To create a image with Dockerfile.
+    echo -e "FROM base\nRUN apt-get install hello\nCMD hello" > Dockerfile
+  docker build tcnksm/hello .
+  docker run -rm -t -i tcnksm/hello /bin/bash
+To login to a image.
+    docker login
+To push a imges to remote repository. You need to sign up to Docker index in advance. Exmple uploaded image.
+    docker push tcnksm/hello
+To delete a image
+    docker rmi tcnkms/hello
+To show all images
+    docker images
+To show image information like IP adress.
+    docker inspect tcnksm/hello
+To show command history of a image.
+    docker history tcnksm/hello
